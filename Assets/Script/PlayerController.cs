@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform playerPos;
+    [SerializeField] GameObject box;
     public Vector3 movePos;
     private Vector3 moveX = new Vector3(1, 0, 0);
     private Vector3 moveY = new Vector3(0, 1, 0);
+    private Vector2 target;
     [SerializeField] private float speed;
     private bool moveJudge = true;
     // Start is called before the first frame update
@@ -44,5 +46,18 @@ public class PlayerController : MonoBehaviour
         }
         playerPos.position = Vector3.MoveTowards(playerPos.position, movePos, speed * Time.deltaTime);
         if (playerPos.position == movePos) { moveJudge = true; }
+        Ray2D ray = new Ray2D(transform.position, transform.right);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 5f);
+        if (hit.collider)
+        {
+            Debug.Log("“–‚½‚Á‚½");
+        }
+        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.green);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+         target = (box.transform.position - this.transform.position).normalized;
+         collision.transform.Translate(target.x * 2, target.y * 2, 0);
     }
 }
