@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 target;
     [SerializeField] private float speed;
     private bool moveJudge = true;
+    [SerializeField] LayerMask blockLayer;
+    [SerializeField] private Vector3 previousPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,43 +23,50 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        previousPos = transform.position;
+        Ray2D ray = new Ray2D(transform.position, transform.up);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 1f, blockLayer);
+        if (hit)
+        {
+            Debug.DrawRay(transform.position, transform.up, Color.red);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                target = (hit.collider.transform.position - this.transform.position).normalized;
+                hit.collider.transform.Translate(target.x, target.y, 0);
+            }
+        }
         if (moveJudge)
         {
             if (Input.GetKeyDown(KeyCode.W)) 
             { 
+                transform.eulerAngles = Vector3.zero;
                 movePos = transform.position + moveY;
                 moveJudge = false;
             }
             if (Input.GetKeyDown(KeyCode.S)) 
             { 
+                transform.eulerAngles = new Vector3(0, 0, 180);
                 movePos = transform.position + -moveY;
                 moveJudge = false;
             }
             if (Input.GetKeyDown(KeyCode.D)) 
             { 
+                transform.eulerAngles = new Vector3(0, 0, 270);
                 movePos = transform.position + moveX;
                 moveJudge = false;
             }
             if (Input.GetKeyDown(KeyCode.A)) 
             { 
+                transform.eulerAngles = new Vector3(0, 0, 90);
                 movePos = transform.position + -moveX;
                 moveJudge = false;
             }
         }
         playerPos.position = Vector3.MoveTowards(playerPos.position, movePos, speed * Time.deltaTime);
         if (playerPos.position == movePos) { moveJudge = true; }
-        Ray2D ray = new Ray2D(transform.position, transform.right);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 5f);
-        if (hit.collider)
-        {
-            Debug.Log("“–‚½‚Á‚½");
-        }
-        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.green);
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-         target = (box.transform.position - this.transform.position).normalized;
-         collision.transform.Translate(target.x * 2, target.y * 2, 0);
+        transform.position = previousPos;
     }
 }
