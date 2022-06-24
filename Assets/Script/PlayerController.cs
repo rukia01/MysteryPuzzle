@@ -5,6 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform playerPos;
+    [SerializeField] private SpriteRenderer playerRenderer;
+    [SerializeField] private Sprite forward;
+    [SerializeField] private Sprite back;
+    [SerializeField] private Sprite right;
+    [SerializeField] private Sprite left;
     public Vector3 movePos;
     private Vector3 moveX = new Vector3(1, 0, 0);
     private Vector3 moveY = new Vector3(0, 1, 0);
@@ -51,6 +56,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W))
             {
                 boxMove = 0;
+                playerRenderer.sprite = forward;
                 if (hits[0].collider == null)
                 {
                     Debug.Log("è„");
@@ -61,6 +67,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 boxMove = 1;
+                playerRenderer.sprite = back;
                 if (hits[1].collider == null)
                 {
                     Debug.Log("â∫");
@@ -71,7 +78,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 boxMove = 2;
-                transform.localScale = Vector3.one;
+                playerRenderer.sprite = right;
                 if (hits[2].collider == null)
                 {
                     Debug.Log("âE");
@@ -82,7 +89,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 boxMove = 3;
-                transform.localScale = new Vector3(-1,1,1);
+                playerRenderer.sprite = left;
                 if (hits[3].collider == null)
                 {
                     Debug.Log("ç∂");
