@@ -33,18 +33,14 @@ public class PlayerController : MonoBehaviour
         hits[1] = Physics2D.Raycast(transform.position, -transform.up, 1f, blockLayer);
         hits[2] = Physics2D.Raycast(transform.position, transform.right, 1f, blockLayer);
         hits[3] = Physics2D.Raycast(transform.position, -transform.right, 1f, blockLayer);
-        //Debug.DrawRay(transform.position, transform.up, Color.red);
-        //Debug.DrawRay(transform.position, -transform.up, Color.red);
-        //Debug.DrawRay(transform.position, transform.right, Color.red);
-        //Debug.DrawRay(transform.position, -transform.right, Color.red);
 
-        Debug.Log((hits[0].collider == null) + ":" + (hits[1].collider == null) + ":" + (hits[2].collider == null) + ":" + (hits[3].collider == null)) ;
+        //Debug.Log((hits[0].collider == null) + ":" + (hits[1].collider == null) + ":" + (hits[2].collider == null) + ":" + (hits[3].collider == null)) ;
         if (hits[0].collider != null || hits[1].collider != null || hits[2].collider != null || hits[3].collider != null)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 hit = hits[boxMove];
-                if (hit.collider != null)
+                if (hit.collider != null)  //î†ÇâüÇ∑
                 {
                     target = (hit.collider.transform.position - this.transform.position).normalized;
                     hit.collider.transform.Translate(Mathf.Round(target.x), Mathf.Round(target.y), 0);
@@ -53,13 +49,13 @@ public class PlayerController : MonoBehaviour
         }
         if (moveJudge)
         {
+            //à⁄ìÆ
             if (Input.GetKeyDown(KeyCode.W))
             {
                 boxMove = 0;
                 playerRenderer.sprite = forward;
                 if (hits[0].collider == null)
                 {
-                    Debug.Log("è„");
                     movePos = transform.position + moveY;
                 }
                 moveJudge = false;
@@ -70,7 +66,6 @@ public class PlayerController : MonoBehaviour
                 playerRenderer.sprite = back;
                 if (hits[1].collider == null)
                 {
-                    Debug.Log("â∫");
                     movePos = transform.position + -moveY;
                 }
                 moveJudge = false;
@@ -81,7 +76,6 @@ public class PlayerController : MonoBehaviour
                 playerRenderer.sprite = right;
                 if (hits[2].collider == null)
                 {
-                    Debug.Log("âE");
                     movePos = transform.position + moveX;
                 }
                 moveJudge = false;
@@ -92,7 +86,6 @@ public class PlayerController : MonoBehaviour
                 playerRenderer.sprite = left;
                 if (hits[3].collider == null)
                 {
-                    Debug.Log("ç∂");
                     movePos = transform.position + -moveX;
                 }
                 moveJudge = false;
