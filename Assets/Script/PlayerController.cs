@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite back;
     [SerializeField] private Sprite right;
     [SerializeField] private Sprite left;
+    [SerializeField] GameDirector gameDirector;
+    [SerializeField] AudioClip kick;
+    [SerializeField] AudioSource audioS;
     public Vector3 movePos;
     private Vector3 moveX = new Vector3(1, 0, 0);
     private Vector3 moveY = new Vector3(0, 1, 0);
@@ -20,6 +23,8 @@ public class PlayerController : MonoBehaviour
     private int boxMove;
     RaycastHit2D hit;
     RaycastHit2D [] hits = new RaycastHit2D [4];
+    private GameObject box;
+    private Box boxScr;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,15 +39,25 @@ public class PlayerController : MonoBehaviour
         hits[2] = Physics2D.Raycast(transform.position, transform.right, 1f, blockLayer);
         hits[3] = Physics2D.Raycast(transform.position, -transform.right, 1f, blockLayer);
 
-        //Debug.Log((hits[0].collider == null) + ":" + (hits[1].collider == null) + ":" + (hits[2].collider == null) + ":" + (hits[3].collider == null)) ;
         if (hits[0].collider != null || hits[1].collider != null || hits[2].collider != null || hits[3].collider != null)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 hit = hits[boxMove];
-                if (hit.collider != null)  //” ‚ð‰Ÿ‚·
+                if (hit.collider != null && hit.collider.gameObject.tag == "box")  //” ‚ð‰Ÿ‚·
                 {
+                    audioS.PlayOneShot(kick);
+                    box = hit.collider.gameObject;
+                    boxScr = box.GetComponent<Box>();
                     target = (hit.collider.transform.position - this.transform.position).normalized;
+                    if (!boxScr.xMove)
+                    {
+                        target.x = 0;
+                    }
+                    if (!boxScr.yMove)
+                    {
+                        target.y = 0;
+                    }
                     hit.collider.transform.Translate(Mathf.Round(target.x), Mathf.Round(target.y), 0);
                 }
             }
@@ -96,5 +111,9 @@ public class PlayerController : MonoBehaviour
         {
             moveJudge = true;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        gameDirector.StageClear();
     }
 }
