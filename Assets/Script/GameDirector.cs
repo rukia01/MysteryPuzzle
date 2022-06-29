@@ -18,6 +18,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] GameObject titleBotton;
     [SerializeField] GameObject clearTitleBotton;
     [SerializeField] AudioSource audioS;
+    [SerializeField] AudioSource bgm;
     [SerializeField] AudioClip clear;
     [SerializeField] AudioClip allClear;
     private int i = 0;
@@ -25,11 +26,13 @@ public class GameDirector : MonoBehaviour
     void Start()
     {
         panel.SetActive(false);
+        bgm.Play();
     }
 
     // Update is called once per frame
     public void StageClear()
     {
+        bgm.Stop();
         playerController.enabled = false;
         i++;
         if (i == stage.Length)
@@ -63,5 +66,6 @@ public class GameDirector : MonoBehaviour
             playerController.movePos = plyerPos[i].position;
         }
         panel.SetActive(false);
+        bgm.Play();
     }
 }
