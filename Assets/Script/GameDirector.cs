@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class GameDirector : MonoBehaviour
 {
-    [SerializeField] GameObject[] stage;
-    [SerializeField] Transform[] plyerPos;
+    [SerializeField] GameObject[] stage;  //ステージ
+    [SerializeField] Transform[] plyerPos;  //ステージごとのプレイヤーの開始位置
     [SerializeField] Transform player;
     [SerializeField] BoxCollider2D playerCol;
     [SerializeField] PlayerController playerController;
@@ -18,9 +18,9 @@ public class GameDirector : MonoBehaviour
     [SerializeField] GameObject titleBotton;
     [SerializeField] GameObject clearTitleBotton;
     [SerializeField] AudioSource audioS;
-    [SerializeField] AudioSource bgm;
-    [SerializeField] AudioClip clear;
-    [SerializeField] AudioClip allClear;
+    [SerializeField] AudioSource bgm;  //BGM
+    [SerializeField] AudioClip clear;  //クリアSE
+    [SerializeField] AudioClip allClear;  //全ステージクリアSE
     private int i = 0;
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class GameDirector : MonoBehaviour
         bgm.Stop();
         playerController.enabled = false;
         i++;
-        if (i == stage.Length)
+        if (i == stage.Length)  //全ステージクリア
         {
             audioS.PlayOneShot(allClear);
             stageClearText.text = "全ステージクリア!!";
@@ -44,7 +44,7 @@ public class GameDirector : MonoBehaviour
             titleBotton.SetActive(false);
             clearTitleBotton.SetActive(true);
         }
-        else
+        else  //ステージクリア
         {
             audioS.PlayOneShot(clear);
             stageClearText.text = "ステージ" + i + "クリア";
@@ -56,7 +56,7 @@ public class GameDirector : MonoBehaviour
     {
         SceneManager.LoadScene("Title");
     }
-    public void NextStage()
+    public void NextStage()  //次のステージに移動
     {
         if (i < stage.Length)
         {

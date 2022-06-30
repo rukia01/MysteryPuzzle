@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,13 +12,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite right;
     [SerializeField] private Sprite left;
     [SerializeField] GameDirector gameDirector;
-    [SerializeField] AudioClip kick;
+    [SerializeField] AudioClip kick;  //箱を押した時のSE
     [SerializeField] AudioSource audioS;
     public Vector3 movePos;
-    private Vector3 moveX = new Vector3(1, 0, 0);
-    private Vector3 moveY = new Vector3(0, 1, 0);
+    private Vector3 moveX = new Vector3(1, 0, 0);  //X方向の移動量
+    private Vector3 moveY = new Vector3(0, 1, 0);  //Y方向の移動量
     private Vector2 target;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed;  //移動速度
     private bool moveJudge = true;
     [SerializeField] LayerMask blockLayer;
     private int boxMove;
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
             {
                 boxMove = 0;
                 playerRenderer.sprite = forward;
-                if (hits[0].collider == null)
+                if (hits[0].collider == null)  //移動可能かどうか
                 {
                     movePos = transform.position + moveY;
                 }
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 boxMove = 1;
                 playerRenderer.sprite = back;
-                if (hits[1].collider == null)
+                if (hits[1].collider == null)  //移動可能かどうか
                 {
                     movePos = transform.position + -moveY;
                 }
@@ -89,7 +90,7 @@ public class PlayerController : MonoBehaviour
             {
                 boxMove = 2;
                 playerRenderer.sprite = right;
-                if (hits[2].collider == null)
+                if (hits[2].collider == null)  //移動可能かどうか
                 {
                     movePos = transform.position + moveX;
                 }
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
             {
                 boxMove = 3;
                 playerRenderer.sprite = left;
-                if (hits[3].collider == null)
+                if (hits[3].collider == null)  //移動可能かどうか
                 {
                     movePos = transform.position + -moveX;
                 }
@@ -111,9 +112,14 @@ public class PlayerController : MonoBehaviour
         {
             moveJudge = true;
         }
+        if (Input.GetKeyDown(KeyCode.R))  //シーンのリロード。ステージも初めからになる
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //ステージクリア判定
         gameDirector.StageClear();
     }
 }

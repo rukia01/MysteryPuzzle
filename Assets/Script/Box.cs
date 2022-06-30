@@ -5,20 +5,9 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     private Vector3 hitPos;
-    public bool xMove = true;
-    public bool yMove = true;
+    public bool xMove = true;  //X•ûŒü‚ÉˆÚ“®‰Â”\‚©
+    public bool yMove = true;  //Y•ûŒü‚ÉˆÚ“®‰Â”\‚©
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "box" || collision.gameObject.tag == "Wall")
@@ -26,15 +15,14 @@ public class Box : MonoBehaviour
             foreach (ContactPoint2D point in collision.contacts)
             {
                 hitPos = point.point;
-                if (this.transform.position.x != hitPos.x)
+                if (this.transform.position.x != hitPos.x)  //X•ûŒü‚ÉˆÚ“®‚Å‚«‚È‚¢
                 {
                     xMove = false;
                 }
-                if (this.transform.position.y != hitPos.y)
+                if (this.transform.position.y != hitPos.y)  //Y•ûŒü‚ÉˆÚ“®‚Å‚«‚È‚¢
                 {
                     yMove = false;
                 }
-                Debug.Log(hitPos);
             }
         }
     }
